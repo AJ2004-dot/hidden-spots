@@ -1,0 +1,85 @@
+-- Hidden Spots Database Schema
+-- MongoDB equivalent collections structure for reference
+
+-- Users Collection
+-- {
+--   _id: ObjectId,
+--   username: String,
+--   email: String,
+--   avatar: String,
+--   createdAt: Date,
+--   stats: {
+--     spotsDiscovered: Number,
+--     storiesShared: Number,
+--     likesReceived: Number,
+--     savedSpots: Number
+--   }
+-- }
+
+-- Spots Collection with Geospatial Index
+-- {
+--   _id: ObjectId,
+--   name: String,
+--   description: String,
+--   vibe: String, // Romantic, Serene, Creative, etc.
+--   location: {
+--     type: "Point",
+--     coordinates: [longitude, latitude] // GeoJSON format
+--   },
+--   address: String,
+--   bestTime: String,
+--   tips: [String],
+--   images: [String], // URLs to images
+--   ratings: {
+--     overall: Number,
+--     uniqueness: Number,
+--     safety: Number,
+--     crowdLevel: Number,
+--     totalRatings: Number
+--   },
+--   createdBy: ObjectId, // Reference to Users
+--   createdAt: Date,
+--   isVerified: Boolean,
+--   tags: [String]
+-- }
+
+-- Stories Collection
+-- {
+--   _id: ObjectId,
+--   spotId: ObjectId, // Reference to Spots
+--   userId: ObjectId, // Reference to Users (optional for anonymous)
+--   author: String, // Display name or "Anonymous"
+--   content: String,
+--   isAnonymous: Boolean,
+--   likes: Number,
+--   createdAt: Date,
+--   isReported: Boolean
+-- }
+
+-- Ratings Collection
+-- {
+--   _id: ObjectId,
+--   spotId: ObjectId,
+--   userId: ObjectId,
+--   overall: Number,
+--   uniqueness: Number,
+--   safety: Number,
+--   crowdLevel: Number,
+--   createdAt: Date
+-- }
+
+-- Saved Spots Collection
+-- {
+--   _id: ObjectId,
+--   userId: ObjectId,
+--   spotId: ObjectId,
+--   createdAt: Date
+-- }
+
+-- MongoDB Indexes for Performance
+-- db.spots.createIndex({ "location": "2dsphere" }) // Geospatial index
+-- db.spots.createIndex({ "vibe": 1 })
+-- db.spots.createIndex({ "ratings.overall": -1 })
+-- db.spots.createIndex({ "createdAt": -1 })
+-- db.stories.createIndex({ "spotId": 1, "createdAt": -1 })
+-- db.ratings.createIndex({ "spotId": 1, "userId": 1 }, { unique: true })
